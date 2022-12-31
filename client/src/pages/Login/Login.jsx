@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Form } from '../../components'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
@@ -7,15 +7,20 @@ import { setUser } from '../../redux/slices/user';
 import { saveToStorage } from '../../utils/localStorage';
 import PostService from '../../services/postService';
 import { setPosts } from '../../redux/slices/post';
+import { Alert } from '@mui/material';
+import { ErrorMessage } from './styles'
 
 const Login = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-
+  const [error,setError] = useState({})
     const { user:userData } = useSelector((state=>state))
   
     const handleLogin = async (username,email,password) => {
-      const { user, accessToken } = await authService.login(username,email,password)
+      const { user, accessToken, error} = await authService.login(username,email,password)
+      if(!user){
+        setError({message:error.message})
+      }
       dispatch(setUser({username:user.username,token:accessToken}))
       saveToStorage('username',user.username)
       saveToStorage('accessToken',accessToken)
@@ -27,16 +32,13 @@ const Login = () => {
     }
   
     return (
-    <div>
       <div>
-      {userData.username}
+        <Form onSubmit={handleLogin} title='Login'>
+          {error.message ? <ErrorMessage><Alert severity="error">{error.message}</Alert></ErrorMessage> : null}
+        </Form>
       </div>
-      <div>
-      {userData.token}
-      </div>
-      <Form onSubmit={handleLogin} title='Login' />
-    </div>
   )
+
 }
 
 export default Login

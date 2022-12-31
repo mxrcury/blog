@@ -10,8 +10,12 @@ class authService {
     }
     async login(username,email,password) {
         const userData = {username,email,password}
-        const registeredUser = await $apiAuth.post('/auth/login',userData)        
-        return registeredUser.data
+        try {
+            const logginnedUser = await $apiAuth.post('/auth/login',userData)        
+            return logginnedUser.data                
+        } catch (error) {            
+            return {error:error.response.data}
+        }
 
     }
     async logout() {

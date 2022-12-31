@@ -6,7 +6,8 @@ const UserController = require('../controllers/user-controller')
 const usersRouter = new Router()
 
 
-usersRouter.get('',UserController.getUsers)
-usersRouter.get('/:id',UserController.getOneUser)
+usersRouter.get('', UserController.getUsers)
+usersRouter.get('/:id', UserController.getOneUser)
+usersRouter.post('/comment', UserController.addComment)
 
 module.exports = usersRouter

@@ -5,15 +5,13 @@ import UserService from '../../services/userService';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { setUsers } from '../../redux/slices/user';
-import { Button, Pagination, PaginationItem } from '@mui/material';
-import usePagination from '@mui/material/usePagination/usePagination';
+import { Button, Pagination } from '@mui/material';
 
 const Users = () => {
     const dispatch = useDispatch()
     const {users} = useSelector(({user})=>user)
-    const [pagination,setPagination] = useState({currentPage:2,})
+    const [pagination,setPagination] = useState({currentPage:1})
     const { value:{search}, onChange } = useInput('search')
-    // const { pagination, currentPage,se }= usePagination()
   
     useEffect(()=>{
         async function fetchUsers(){

@@ -25,7 +25,17 @@ create table post_comments(
  post_id INT NOT NULL,
  created_at VARCHAR(255) NOT NULL,
  created_by VARCHAR(255) NOT NULL,
+ text TEXT NOT NULL,
  FOREIGN KEY (created_by) references users (username),
  FOREIGN KEY (post_id) references posts (id)
 );
 -- Add replies field for future app upgrade
+create table user_comments(
+  id SERIAL PRIMARY KEY,
+  user_id INT NOT NULL,
+  created_at VARCHAR(255) NOT NULL,
+  created_by VARCHAR(255) NOT NULL,
+  text TEXT NOT NULL,
+  FOREIGN KEY (user_id) references users (id),
+  FOREIGN KEY (created_by) references users (username)
+)

@@ -24,11 +24,12 @@ $api.interceptors.response.use(config=>{
 },async error=>{
     if(error.response.status === 401 && error.response !== undefined){
         try {
-            const res = await $apiAuth.get('/auth/refresh')
-            const tokens = res.data
-            console.log(`TOKENS - ${tokens}`);
-            saveToStorage('accessToken',tokens.accessToken)
-            store.dispatch(updateToken(tokens.refreshToken))
+            const originalRequest = error.config;
+            const res = await $apiAuth.get('/auth/refresh');
+            const tokens = res.data;
+            saveToStorage('accessToken',tokens.accessToken);
+            store.dispatch(updateToken(tokens.refreshToken));
+            return $api.request(originalRequest);
         } catch (error) {
             
         }

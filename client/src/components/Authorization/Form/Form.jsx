@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Container, Input, Form as FormContainer, SubmitButton, FormTitle } from './styles';
 
-const Form = ({ onSubmit, title = 'Login' }) => {
+const Form = ({ onSubmit, title = 'Login', children }) => {
   const [value, setValue] = useState({})
 
   const onChange = (e) => {
@@ -53,6 +53,7 @@ const Form = ({ onSubmit, title = 'Login' }) => {
           {title}
         </SubmitButton>
       </FormContainer>
+      {children}
     </Container>
   )
 }

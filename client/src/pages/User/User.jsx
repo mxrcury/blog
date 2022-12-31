@@ -1,58 +1,88 @@
-import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router';
-import UserService from '../../services/userService';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
-import { addCommentToUser, setChosenUser } from '../../redux';
-import { Container } from '@mui/material';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router";
+import UserService from "../../services/userService";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { addCommentToUser, setChosenUser } from "../../redux";
+import { Container } from "@mui/material";
+import useInput from "../../hooks/useInput.js";
+import { Button, Input, CommentsSubtitle } from "./styles";
+import { useTime } from "../../hooks";
 
 const User = () => {
-    const dispatch = useDispatch()
-    // only for testing, delete in future update --
-    const [comment,setComment] = useState('')
-    const { id } = useParams()
-    const { user:{ chosenUser,username } } = useSelector(state=>state)
+    const dispatch = useDispatch();
+    const {
+        onChange,
+        value: { comment: commentInput }, clearInputs
+    } = useInput("comment");
+    const { getCurrentTimeInISO } = useTime();
+    const { id } = useParams();
+    const {
+        user: { chosenUser, username },
+    } = useSelector((state) => state);
 
-    useEffect(()=>{
-        async function getUser(){
-            const user = await UserService.getUser(id)
-            dispatch(setChosenUser(user))
+    useEffect(() => {
+        async function getUser() {
+            const user = await UserService.getUser(id);
+            dispatch(setChosenUser(user));
         }
-        getUser()
-        return ()=> {
-            dispatch(setChosenUser({}))
-        }
-    },[])
-    // only for testing comments with rtk
-    const addComment = () => {
-        dispatch(addCommentToUser({text:comment,author:username}))
-    }
-
+        getUser();
+        return () => {
+            dispatch(setChosenUser({}));
+        };
+    }, []);
+    const addComment = async () => {
+        const currentTime = getCurrentTimeInISO(Date);
+        const comment = {
+            text: commentInput.value,
+            createdBy: username,
+            createdAt: currentTime,
+            userId: chosenUser.id,
+        };
+        dispatch(addCommentToUser(comment));
+        clearInputs()
+        await UserService.addComment(comment);
+    };
     return (
         // REFACTOR BRO, divide on components and styled items, add comments feature
-        <Container maxWidth='sm' >
-            <div style={{ marginTop: '40px' }}>
-                You are on page:
-                <div style={{ textAlign: 'center' }} >
+        <Container maxWidth="sm">
+            <div style={{ marginTop: "40px" }}>
+                {`${chosenUser.username}'s profile`}:
+                <div style={{ textAlign: "center" }}>
                     <h3>{chosenUser.username}</h3>
                     <h5>{chosenUser.email}</h5>
-                    <button style={{ marginBottom: '10px' }}>{`Open chat with ${chosenUser.username}`}</button>
-                    <hr style={{ marginBottom: '10px' }} />
+                    <button
+                        style={{ marginBottom: "10px" }}
+                    >{`Open chat with ${chosenUser.username}`}</button>
+                    <hr style={{ marginBottom: "10px" }} />
                 </div>
-                <h5>Comments:</h5>
-                <input value={comment} onChange={e => setComment(e.target.value)} /> <button onClick={addComment} >Send</button>
+                <CommentsSubtitle >{`${chosenUser.username}'s profile comments:`}</CommentsSubtitle>
+                <div style={{display:'flex',justifyContent:'start',marginBottom:'10px'}} >
+                    <Input
+                        name="comment"
+                        onChange={onChange}
+                        value={commentInput.value}
+                        placeholder='Enter a text'
+                    />
+                    <Button variant='contained' onClick={addComment}>Send</Button>
+                </div>
                 <div>
                     {chosenUser.comments
-                        ? chosenUser.comments.map(comment =>
-                            <div style={{ border: '1px solid gray', marginBottom: '5px' }} key={comment.author}>
-                                                                                                            <h5>{comment.author}</h5>
-                                                                                                            <p>{comment.text}</p>
-                            </div>)
+                        ? chosenUser.comments.map((comment) => (
+                            <div
+                                style={{ border: "1px solid gray", marginBottom: "10px", padding: '5px', borderRadius:'6px' }}
+                                key={comment.id}
+                            >
+                                <h5>{comment.createdBy}</h5>
+                                <p>{comment.text}</p>
+                                <p style={{ textAlign: 'end', color: 'gray', fontSize: '14px', marginRight: '5px' }}>{comment.createdAt}</p>
+                            </div>
+                        ))
                         : null}
                 </div>
             </div>
         </Container>
-  )
-}
+    );
+};
 
-export default User
+export default User;
