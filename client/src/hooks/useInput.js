@@ -8,7 +8,6 @@ const useInput = (...inputNames) => {
         },{}) 
         return inputs
     });
-    console.log(value);
     const onChange = (e) => {
       const inputContent = {
         ...value[e.target.name],

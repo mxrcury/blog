@@ -9,5 +9,7 @@ const usersRouter = new Router()
 usersRouter.get('', UserController.getUsers)
 usersRouter.get('/:id', UserController.getOneUser)
 usersRouter.post('/comment', UserController.addComment)
+usersRouter.post('/edit', UserController.editProfile)
+
 
 module.exports = usersRouter

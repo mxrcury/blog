@@ -15,10 +15,10 @@ const User = () => {
         onChange,
         value: { comment: commentInput }, clearInputs
     } = useInput("comment");
-    const { getCurrentTimeInISO } = useTime();
+    const { getCurrentDateInISO } = useTime();
     const { id } = useParams();
     const {
-        user: { chosenUser, username },
+        user: { chosenUser, userInfo },
     } = useSelector((state) => state);
 
     useEffect(() => {
@@ -32,10 +32,10 @@ const User = () => {
         };
     }, []);
     const addComment = async () => {
-        const currentTime = getCurrentTimeInISO(Date);
+        const currentTime = getCurrentDateInISO(Date);
         const comment = {
             text: commentInput.value,
-            createdBy: username,
+            createdBy: userInfo.username,
             createdAt: currentTime,
             userId: chosenUser.id,
         };
@@ -51,6 +51,13 @@ const User = () => {
                 <div style={{ textAlign: "center" }}>
                     <h3>{chosenUser.username}</h3>
                     <h5>{chosenUser.email}</h5>
+                    <h5>{chosenUser.jobPosition}</h5>
+                    <h5>{chosenUser.companyName}</h5>
+                    <div style={{display:'flex',justifyContent:'space-between',gap:'5px'}} >
+
+                    {chosenUser.skills ? chosenUser.skills.split(',').map(skill=><div style={{background:'rgba(30, 139, 195, 1)', width:'50%',display:'inline', color:'white', padding:'2px 5px',borderRadius:'5px'}}>{skill}</div>) : null}
+                    </div>
+                    <h5>{chosenUser.age}</h5>
                     <button
                         style={{ marginBottom: "10px" }}
                     >{`Open chat with ${chosenUser.username}`}</button>

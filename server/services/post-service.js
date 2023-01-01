@@ -39,7 +39,11 @@ class PostService {
       `INSERT INTO posts (title,content, created_by,created_at, likes,caption) values ($1,$2,$3,$4, $5,$6) RETURNING*;`,
       [title, content, created_by, created_at, likes, caption]
     );
-    return createdPost.rows[0];
+    return {
+      id: createdPost.rows[0].id,
+      message: `Post successfully added`,
+      status: "ok",
+    };
   }
   async deletePost(id) {
     const deletedPost = await pool.query(

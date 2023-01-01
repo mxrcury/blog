@@ -1,42 +1,52 @@
-import React from 'react'
-import { useSelector } from 'react-redux';
-import { Button } from './styles';
-import authService from '../../services/authService';
-import { useDispatch } from 'react-redux';
-import { clearUser } from '../../redux';
-import { Navigate } from 'react-router';
-import { removeFromStorage } from '../../utils/localStorage';
+import React from "react";
+import { useSelector } from "react-redux";
+import { Button, ButtonsContainer, EditLink, LogOutButton } from "./styles";
+import authService from "../../services/authService";
+import { useDispatch } from "react-redux";
+import { clearUser } from "../../redux";
+import { Navigate } from "react-router";
+import { parseCamelCase, removeFromStorage } from "../../utils/localStorage";
+import { Container } from "@mui/material";
+import { ProfileInfo } from "../../components";
 
 const Profile = () => {
-  const dispatch = useDispatch()
-  const { user } = useSelector(state=>state)
+  const dispatch = useDispatch();
+  const {
+    user: { isAuth, userInfo },
+  } = useSelector((state) => state);
 
   const handleLogOut = async () => {
-    await authService.logout()
-    dispatch(clearUser())
-    removeFromStorage('username')
-    removeFromStorage('accessToken')
-  }
+    await authService.logout();
+    dispatch(clearUser());
+    removeFromStorage("userInfo");
+    removeFromStorage("accessToken");
+  };
 
-  console.log(user);
-  
-  if(!user.isAuth) {
-    return <Navigate to='/login' />
+  if (!isAuth) {
+    return <Navigate to="/login" />;
   }
 
   return (
-    <>
-      <div style={{marginLeft:'8px'}}>
-        <p>Your username: {user.username}</p>
-        <p> Are you authorizate {JSON.stringify(user.isAuth)} </p>
-      </div>
-      {/* <div style={{marginBottom:'30px', width:'200px'}} className="">{user.token}
-</div> */}
-      <Button onClick={handleLogOut} variant='contained'>
-        Log Out
-      </Button>
-    </>
-  )
-}
+    <Container maxWidth={"sm"} sx={{ marginTop: "27px" }}>
+      <p>
+        You {isAuth
+          ? (<> are authorizate as <label style={{ fontWeight: "600" }}> {userInfo.username}</label></>)
+          : ("are not authorizate")
+        }
+      </p>
+      <ProfileInfo />
+      <ButtonsContainer>
+        <LogOutButton onClick={handleLogOut} variant="contained">
+          Log Out
+        </LogOutButton>
+        <EditLink to='/profile/edit' >
+          <Button variant="contained">
+            Edit profile
+          </Button>
+        </EditLink>
+      </ButtonsContainer>
+    </Container>
+  );
+};
 
-export default Profile
+export default Profile;

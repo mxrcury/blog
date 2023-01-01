@@ -72,8 +72,19 @@ class UserController {
         try {
             const comment = req.body;
             await UserService.addComment(comment);
+            res.json({ status: "ok", message: `Comment was added` })
         } catch (error) {
             next(error);
+        }
+    }
+    async editProfile(req,res,next) {
+        try {
+            const options = req.body
+            const { user } = req
+            await UserService.editProfile(options,user)
+            res.json({ status: "ok", message: `Options was updated` })
+        } catch (error) {
+            next(error)
         }
     }
 }

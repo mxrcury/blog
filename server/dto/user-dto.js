@@ -10,8 +10,10 @@ class UserDto{
         this.id = user.id
         this.username = user.username
         this.email = user.email
-        this.password = user.password
-        this.activationLink = user.activation_link
+        this.jobPosition = user.job_position
+        this.skills = user.skills
+        this.companyName = user.company_name
+        this.age = user.age
     }
 }
 

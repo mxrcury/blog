@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import PostService from "../../services/postService";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,10 +17,12 @@ import {
     CommentButton,
     CommentInput,
     BackButton,
-    CommentContainer,
+    CommentsContainer,
 } from "./styles.js";
 // import { TextField } from '@mui/material';
 import useInput from "./../../hooks/useInput";
+import { Alert, CircularProgress, Snackbar } from "@mui/material";
+import { useTime } from "../../hooks";
 
 const Post = () => {
     const {
@@ -29,10 +31,11 @@ const Post = () => {
         clearInputs,
     } = useInput("comment");
     const { id } = useParams();
+    const { getCurrentDateInISO } = useTime()
     const dispatch = useDispatch();
     const {
         post: { currentPost },
-        user,
+        user: { userInfo }
     } = useSelector((state) => state);
     useEffect(() => {
         async function getPost() {
@@ -55,16 +58,14 @@ const Post = () => {
         if (!commentInput.value.length) {
             return;
         }
-        const currentDate = new Date();
-        const currentDateToISO = `${currentDate.getFullYear()}-${currentDate.getMonth() + 1
-            }-${currentDate.getDate()}`;
         const comment = {
             postId: currentPost.id,
-            createdBy: user.username,
-            createdAt: currentDateToISO,
+            createdBy: userInfo.username,
+            createdAt: getCurrentDateInISO(Date),
             text: commentInput.value,
         };
         await PostService.addComment(comment);
+
         dispatch(addCommentOnPost(comment));
         clearInputs();
     };
@@ -74,6 +75,9 @@ const Post = () => {
             <Link style={{ color: "white", textDecoration: "none" }} to="/home">
                 <BackButton variant="contained">{`< Back`}</BackButton>{" "}
             </Link>
+            {!currentPost.created_by 
+            ? <CircularProgress sx={{display:'block',margin:'40px auto'}}/> 
+            : <>
             <h2>{currentPost.title}</h2>
             <h4>{currentPost.caption}</h4>
             <p style={{ color: "gray" }}>
@@ -100,9 +104,11 @@ const Post = () => {
                     <LikesQty>{currentPost.likesQty}</LikesQty>
                 </>
             </Likes>
+            </>}
+            
             <hr />
             <h5>Comments:</h5>
-            <CommentContainer>
+            <CommentsContainer>
                 <CommentInput
                     name="comment"
                     type="text"
@@ -114,7 +120,7 @@ const Post = () => {
                 <CommentButton onClick={addComment} variant="contained">
                     Add
                 </CommentButton>
-            </CommentContainer>
+            </CommentsContainer>
             {currentPost.comments
                 ? currentPost.comments.map((comment) => (
                     <div style={{ border: "2px solid gray", marginBottom: "5px" }}>

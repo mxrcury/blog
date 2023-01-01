@@ -4,6 +4,7 @@ const pool = require("../db");
 const ApiError = require("../exceptions/api-error");
 const TokenService = require("./token-service");
 const UserDto = require("../dto/user-dto");
+const { camelToSnakeCaseParser } = require("../utils/parsers");
 
 class UserService {
     async register(username, email, password) {
@@ -134,16 +135,7 @@ class UserService {
 
         delete user.password;
         delete user.activationLink;
-        console.log({ ...user, comments: userComments.rows.map(comment=>{
-            const updatedComment = {
-                ...comment,
-                createdAt:comment.created_at,
-                createdBy:comment.created_by
-            }
-            delete updatedComment.created_at
-            delete updatedComment.created_by
-            return updatedComment
-        }) });
+        // TODO: Refactor and add DTO for comments
         return { ...user, comments: userComments.rows.map(comment=>{
             const updatedComment = {
                 ...comment,
@@ -165,6 +157,21 @@ class UserService {
             return ApiError.BadRequest();
         }
         return { message: `Comment was added successfully`, status: "ok" };
+    }
+    async editProfile(options, currentUserData) {
+        let optionsCount = 0
+        const optionsList = Object.entries(options).map((option, i)=>{
+            optionsCount+=1
+            let parsedOption = camelToSnakeCaseParser(option[0])
+            return `${parsedOption} = $${i + 1}`
+        }).join(`, `)
+        const optionsValues = Object.values(options).map(option=>{
+            return option.value
+        })
+        const updatedOptions = await pool.query(`UPDATE users SET ${optionsList} WHERE id = $${optionsCount + 1} RETURNING*;`,[...optionsValues,currentUserData.id])
+        
+        console.log(`UPDATED OPTIONS`, updatedOptions)
+        return updatedOptions
     }
 }
 

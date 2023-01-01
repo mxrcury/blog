@@ -14,6 +14,10 @@ class UserService {
         console.log(`res comm `, addedComment);
         return addedComment.data;
     }
+    async editProfile(options) {
+        const updatedOptions = await $api.post(`/users/edit`,options)
+        return updatedOptions.data
+    }
 }
 
 export default new UserService();

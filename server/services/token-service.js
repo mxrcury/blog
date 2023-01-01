@@ -1,6 +1,6 @@
-const jwt = require('jsonwebtoken')
-const pool = require('../db')
-const ApiError = require('../exceptions/api-error')
+const jwt = require("jsonwebtoken");
+const pool = require("../db");
+const ApiError = require("../exceptions/api-error");
 
 class TokenService {
   async generateTokens(payload) {
@@ -49,12 +49,12 @@ class TokenService {
   validateAccessToken(token) {
     try {
       const isTokenValid = jwt.verify(token, process.env.ACCESS_SECRET);
+      console.log(`From access token validating - `, isTokenValid);
       return isTokenValid;
     } catch (error) {
-      return false
+      return false;
     }
   }
 }
 
-
-module.exports = new TokenService()
+module.exports = new TokenService();
