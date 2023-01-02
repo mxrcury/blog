@@ -1,6 +1,7 @@
 export { toggleLike } from './slices/post.js'
 export { toggleLikeOnCurrentPost } from './slices/post.js'
 export { addCommentOnPost } from './slices/post.js'
+export { postUpdating } from './slices/post.js'
 export { deletePost } from './slices/post.js'
 export { setCurrentPost } from './slices/post.js'
 export { clearUser } from './slices/user.js'

@@ -2,7 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
     posts:[],
-    currentPost:{}
+    currentPost:{},
+    realTimePosts:null
 }
 
 const postSlice = createSlice({
@@ -48,9 +49,15 @@ const postSlice = createSlice({
         addCommentOnPost:(state,action) => {
             const post = action.payload
             state.currentPost.comments.unshift(post)
+        },
+        postUpdating:(state,action) => {
+            state.realTimePosts = action.payload
+            debugger
+            state.posts.unshift(action.payload)
         }
+
     }
 })
 
-export const { createPost, toggleLike, setPosts, deletePost,setCurrentPost, toggleLikeOnCurrentPost, addCommentOnPost } = postSlice.actions
+export const { createPost, toggleLike, setPosts, deletePost,setCurrentPost, toggleLikeOnCurrentPost, addCommentOnPost,postUpdating } = postSlice.actions
 export const postReducer = postSlice.reducer

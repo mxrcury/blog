@@ -1,6 +1,7 @@
 const pool = require("../db")
 const ApiError = require("../exceptions/api-error")
 const PostService = require("../services/post-service")
+const socketServer = require("../singletones/Socket");
 
 
 class PostController {
@@ -18,9 +19,13 @@ class PostController {
     }
     async create(req,res,next){
         try {
-            const { body } = req
+            const { body } = req            
             const createdPost = await PostService.createPost(body)
-            res.json(createdPost)
+            const isEmitted = socketServer.io.sockets.emit('updatePosts', createdPost)
+            if(!isEmitted){
+                throw ApiError.BadRequest()
+            }
+            res.json({message:'Post has been created',status:'ok'})
         } catch (error) {
             next(error)
         }

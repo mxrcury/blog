@@ -19,12 +19,12 @@ import {
     BackButton,
     CommentsContainer,
 } from "./styles.js";
-// import { TextField } from '@mui/material';
 import useInput from "./../../hooks/useInput";
 import { Alert, CircularProgress, Snackbar } from "@mui/material";
 import { useTime } from "../../hooks";
 
 const Post = () => {
+    const [ socketsData, setSocketsData ] = useState('')
     const {
         onChange,
         value: { comment: commentInput },

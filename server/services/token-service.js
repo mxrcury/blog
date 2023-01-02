@@ -49,7 +49,6 @@ class TokenService {
   validateAccessToken(token) {
     try {
       const isTokenValid = jwt.verify(token, process.env.ACCESS_SECRET);
-      console.log(`From access token validating - `, isTokenValid);
       return isTokenValid;
     } catch (error) {
       return false;

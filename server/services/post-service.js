@@ -40,9 +40,7 @@ class PostService {
       [title, content, created_by, created_at, likes, caption]
     );
     return {
-      id: createdPost.rows[0].id,
-      message: `Post successfully added`,
-      status: "ok",
+      createdPost:createdPost.rows[0]
     };
   }
   async deletePost(id) {

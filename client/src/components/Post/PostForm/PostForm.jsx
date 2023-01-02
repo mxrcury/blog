@@ -8,7 +8,7 @@ import useInput from "./../../../hooks/useInput";
 import { useTime } from "../../../hooks";
 
 const PostForm = ({ successSnackBar }) => {
-  const { user:{ userInfo } } = useSelector(state => state);
+  const { user:{ userInfo }, post } = useSelector(state => state);
   const { getCurrentDateInISO } = useTime()
   const dispatch = useDispatch();
   const {
@@ -38,7 +38,7 @@ const PostForm = ({ successSnackBar }) => {
     };
     const createdPost = await PostService.createPost(post);
 
-    if (createdPost.status === "ok") {
+    if (createdPost.status === 'ok') {
       successSnackBar.open();
       dispatch(createPost({ ...post, id: createdPost.id, likesQty: 0 }));
     }
@@ -90,6 +90,7 @@ const PostForm = ({ successSnackBar }) => {
         style={{ marginBottom: "10px" }}
       />
       <Button onClick={onSubmit}>Add post</Button>
+      {JSON.stringify(post.realTimePosts)}
     </Container>
   );
 };
