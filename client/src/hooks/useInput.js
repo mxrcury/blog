@@ -9,6 +9,7 @@ const useInput = (...inputNames) => {
         return inputs
     });
     const onChange = (e) => {
+      console.log(e.target.name,e.target.value);
       const inputContent = {
         ...value[e.target.name],
         value:e.target.value

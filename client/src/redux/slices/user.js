@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getFromStorage } from "../../utils/localStorage";
 
-const userInfo = getFromStorage("userInfo");
+const userInfo = getFromStorage("userInfo") || {}
 
 const initialState = {
     token: getFromStorage("accessToken") || null,
@@ -13,6 +13,7 @@ const initialState = {
         skills: userInfo.skills || null,
         companyName: userInfo.companyName || null,
         age: userInfo.age || null,
+        // married:userInfo.married || null
     },
     users: {},
     chosenUser: {

@@ -85,6 +85,9 @@ class UserService {
             `SELECT * FROM tokens WHERE refresh_token = $1;`,
             [refreshToken]
         );
+        if(!tokenFromDb.rows[0]){
+            return {message:`No such token was found`}
+        }
         const isTokenValid = TokenService.validateRefreshToken(
             tokenFromDb.rows[0].refresh_token
         );
@@ -99,7 +102,7 @@ class UserService {
         let tokens = {};
         const refreshTokenFromDb = await TokenService.findToken(refreshToken);
         if (!refreshTokenFromDb) {
-            throw ApiError.BadRequest(`Such token was found`);
+            throw ApiError.BadRequest(`Such token was not found`);
         }
         const isRefreshTokenValid = TokenService.validateRefreshToken(
             refreshTokenFromDb.refresh_token

@@ -11,6 +11,7 @@ import useInput from './../../hooks/useInput';
 import UserService from '../../services/userService';
 import { useDispatch } from 'react-redux';
 import { editProfileInfo } from '../../redux/slices/user';
+import { getFromStorage, saveToStorage } from '../../utils/localStorage';
 
 const ProfileEdit = () => {
 
@@ -23,7 +24,7 @@ const ProfileEdit = () => {
 
     const editProfileOptions = async () => {
         // Options can be only object, for array
-        const options = {}
+        let options = {}
         // Loop for changing if any field was changed
         for (const option in userInfo) {
             const isOptionEmpty = value[option].value !== '' 
@@ -33,9 +34,14 @@ const ProfileEdit = () => {
             }
 
         }
-
+        
         await UserService.editProfile(options)
         dispatch(editProfileInfo(options))
+        // options = Object.keys(options).map(option=>({...options, [option]:options[option].value}))
+        options = Object.entries(options).map(option=>({[option[0]]:option[1].value})).reduce((object,field)=>({...object,...field}),{})
+        const userInfoFromStorage = getFromStorage('userInfo')
+        const updatedUserInfo = {...userInfoFromStorage,...options}
+        saveToStorage('userInfo', updatedUserInfo)
         clearInputs()
     }
 

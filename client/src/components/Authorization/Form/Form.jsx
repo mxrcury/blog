@@ -1,15 +1,18 @@
 import React, { useState } from 'react'
 import { Container, Input, Form as FormContainer, SubmitButton, FormTitle } from './styles';
+import useInput from '../../../hooks/useInput';
 
 const Form = ({ onSubmit, title = 'Login', children }) => {
-  const [value, setValue] = useState({})
+  // const [value, setValue] = useState({})
 
-  const onChange = (e) => {
-    setValue({
-      ...value,
-      [e.target.name]: e.target.value,
-    })
-  }
+  const { value:{username,email,password}, onChange } = useInput('username','email','password')
+
+  // const onChange = (e) => {
+  //   setValue({
+  //     ...value,
+  //     [e.target.name]: e.target.value,
+  //   })
+  // }
 
   return (
     <Container>
@@ -23,7 +26,7 @@ const Form = ({ onSubmit, title = 'Login', children }) => {
           id="outlined-size-small"
           defaultValue=""
           required
-          value={value.username}
+          value={username.value}
           onChange={onChange}
           size="small"
         />
@@ -34,7 +37,7 @@ const Form = ({ onSubmit, title = 'Login', children }) => {
           required
           id="outlined-size-small"
           defaultValue=""
-          value={value.email}
+          value={email.value}
           onChange={onChange}
           size="small"
         />
@@ -45,11 +48,11 @@ const Form = ({ onSubmit, title = 'Login', children }) => {
           required
           id="outlined-size-small"
           defaultValue=""
-          value={value.password}
+          value={password.value}
           onChange={onChange}
           size="small"
         />
-        <SubmitButton variant="contained" onClick={() => onSubmit(value.username, value.email, value.password)}>
+        <SubmitButton variant="contained" onClick={() => onSubmit(username.value, email.value, password.value)}>
           {title}
         </SubmitButton>
       </FormContainer>

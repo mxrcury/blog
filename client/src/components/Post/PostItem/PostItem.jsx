@@ -6,15 +6,9 @@ import PostService from '../../../services/postService.js';
 import { toggleLike,deletePost } from '../../../redux/index.js';
 
 
-const PostItem = ({children, post}) => {
+const PostItem = ({children, post, togglePostLike}) => {
     const dispatch = useDispatch()
-    const { user } = useSelector((state)=>state)
-    const toggleLikeOnPost = async () => {
-        const response = await PostService.likePost(post.id)
-        if (response) {
-            dispatch(toggleLike({ id: post.id }))
-        }
-    }
+    const { user } = useSelector(state=>state)
     const onDeletePost = async () => {
         const response = await PostService.deletePost(post.id)
         if(response.status){
@@ -33,7 +27,7 @@ const PostItem = ({children, post}) => {
             <PostInfo>
                 <Likes>
                     <>
-                        <LikeButton onClick={toggleLikeOnPost}>
+                        <LikeButton onClick={()=>togglePostLike(post.id)}>
                             {post.isLiked ? <FavoriteOutlined style={{ color: 'rgba(249, 18, 18, 0.8)' }} /> : <FavoriteBorder />}
                         </LikeButton>
                         <LikesQty>
@@ -46,7 +40,7 @@ const PostItem = ({children, post}) => {
                     created by {post.created_by}
                 </CreatedBy>
             </PostInfo>
-            {post.created_by === user.username ? <button onClick={onDeletePost} style={{ position: 'absolute', right: '5px', top: '5px', background: 'none', outline: 0, border: 0, cursor: 'pointer' }} ><DeleteIcon /></button> : null}
+            {post.created_by === user.userInfo.username ? <button onClick={onDeletePost} style={{ position: 'absolute', right: '5px', top: '5px', background: 'none', outline: 0, border: 0, cursor: 'pointer' }} ><DeleteIcon /></button> : null}
         </Container>
     )
 }

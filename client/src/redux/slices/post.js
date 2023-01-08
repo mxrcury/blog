@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
+    // delete posts if no way found how to dispatch data from sockets to reduxtoolkit
     posts:[],
     currentPost:{},
     realTimePosts:null
@@ -26,7 +27,9 @@ const postSlice = createSlice({
                 }
             })
         },
+        // Delete setPosts
         setPosts:(state,action) => {
+            // debugger
             state.posts = action.payload
         },
         deletePost:(state,action) => {
@@ -61,3 +64,18 @@ const postSlice = createSlice({
 
 export const { createPost, toggleLike, setPosts, deletePost,setCurrentPost, toggleLikeOnCurrentPost, addCommentOnPost,postUpdating } = postSlice.actions
 export const postReducer = postSlice.reducer
+
+
+
+// Delete if it has no sense
+export const setPostsThunk = (socket,posts) => async dispatch => {
+    console.log(`setPostsThunk works`);
+    // debugger
+    await dispatch(setPosts(posts))
+}
+
+
+// const PostThunk = (socket,posts) => dispatch => {
+
+//     return 
+// }

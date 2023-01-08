@@ -82,7 +82,7 @@ class UserController {
             const options = req.body
             const { user } = req
             await UserService.editProfile(options,user)
-            res.json({ status: "ok", message: `Options was updated` })
+            res.json({ status: "ok", message: `Options were updated` })
         } catch (error) {
             next(error)
         }
