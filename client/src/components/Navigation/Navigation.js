@@ -12,7 +12,7 @@ const Navigation = () => {
     return (
       <Links>
         {LINKS.UNATHORIZATED.map((link) => (
-          <Link component={RouterLink} to={link.path}>
+          <Link component={RouterLink} to={link.path} sx={{color:"white"}} color="secondary" >
             {link.title}
           </Link>
         ))}

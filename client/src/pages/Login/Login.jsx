@@ -6,7 +6,7 @@ import authService from "../../services/authService";
 import { setUser } from "../../redux/slices/user";
 import { saveToStorage } from "../../utils/localStorage";
 import PostService from "../../services/postService";
-import { setPosts } from "../../redux/slices/post";
+// import { setPosts } from "../../redux/slices/post";
 import { Alert } from "@mui/material";
 import { ErrorMessage } from "./styles";
 
@@ -17,11 +17,7 @@ const Login = () => {
   const { user: userData } = useSelector((state) => state);
 
   const handleLogin = async (username, email, password) => {
-    const { user, accessToken, error } = await authService.login(
-      username,
-      email,
-      password
-    );
+    const { user, accessToken, error } = await authService.login(username, email, password);
     if (!user) {
       setError({ message: error.message });
     }
@@ -34,13 +30,13 @@ const Login = () => {
     saveToStorage("accessToken", accessToken);
 
     if (!!accessToken) {
-      const post = await PostService.getPosts();
-      dispatch(setPosts(post));
+      // const post = await PostService.getPosts();
+      // dispatch(setPosts(post));
       navigate("/home");
     }
   };
-  if(userData.isAuth){
-    return <Navigate to='/home' />
+  if (userData.isAuth) {
+    return <Navigate to="/home" />;
   }
 
   return (

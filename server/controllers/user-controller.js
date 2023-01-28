@@ -23,10 +23,12 @@ class UserController {
             const { username, email, password } = req.body;
 
             const loggedInUser = await UserService.login(username, email, password);
+
             console.log(`LOGIN`, loggedInUser.refreshToken);
             res.cookie("refreshToken", loggedInUser.refreshToken);
             return res.json(loggedInUser);
         } catch (error) {
+            console.log(error);
             next(error);
         }
     }
@@ -43,7 +45,6 @@ class UserController {
     async refresh(req, res, next) {
         try {
             const { refreshToken } = req.cookies;
-            // console.log(`/REFRESH - cookie - ${refreshToken}`);
             const refreshedTokens = await UserService.refresh(refreshToken);
             res.json(refreshedTokens);
         } catch (error) {
@@ -71,20 +72,20 @@ class UserController {
     async addComment(req, res, next) {
         try {
             const comment = req.body;
-            await UserService.addComment(comment);
-            res.json({ status: "ok", message: `Comment was added` })
+            const addedComment = await UserService.addComment(comment);
+            res.json({ status: "ok", message: `Comment was added`, comment: addedComment });
         } catch (error) {
             next(error);
         }
     }
-    async editProfile(req,res,next) {
+    async editProfile(req, res, next) {
         try {
-            const options = req.body
-            const { user } = req
-            await UserService.editProfile(options,user)
-            res.json({ status: "ok", message: `Options were updated` })
+            const options = req.body;
+            const { user } = req;
+            await UserService.editProfile(options, user);
+            res.json({ status: "ok", message: `Options were updated` });
         } catch (error) {
-            next(error)
+            next(error);
         }
     }
 }

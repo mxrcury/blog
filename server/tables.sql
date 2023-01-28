@@ -61,3 +61,15 @@ alter table users add job_position VARCHAR(255);
 alter table users add skills VARCHAR(255);
 alter table users add company_name VARCHAR(255);
 alter table users add age INT;
+
+--
+
+
+create table messages(
+  id SERIAL PRIMARY KEY,
+  user_id INT NOT NULL,
+  text TEXT NOT NULL,
+  created_at VARCHAR(255) NOT NULL,
+  FOREIGN KEY (user_id) references users (id)
+)
+

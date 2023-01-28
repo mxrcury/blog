@@ -1,14 +1,4 @@
-import {
-    Home,
-    NewPost,
-    Login,
-    Register,
-    Profile,
-    Users,
-    Post,
-    User,
-    ProfileEdit,
-} from "../pages";
+import { Home, NewPost, Login, Register, Profile, Users, Post, User, ProfileEdit, Chats } from "../pages";
 
 export const ROUTES = [
     { path: "/home", element: Home },
@@ -20,4 +10,6 @@ export const ROUTES = [
     { path: "/users", element: Users },
     { path: "/users/:id", element: User },
     { path: "/profile/edit", element: ProfileEdit },
+    { path: "/chats", element: Chats },
 ];
+// make routing chats by id mb or what idk just for personal chatting something

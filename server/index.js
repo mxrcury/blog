@@ -5,15 +5,13 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const errorMiddleware = require("./middlewares/error-middleware");
 const SocketEvents = require("./socket");
-const socketSingleton = require('./singletones/Socket')
+const socketSingleton = require("./singletones/Socket");
 const PORT = process.env.PORT || 7000;
 
 const app = express();
 const server = require("http").Server(app);
-const socketServer = socketSingleton.configure(server)
-
-const socketConnect = SocketEvents.connect(socketServer)
-
+// const socketServer = socketSingleton.configure(server)
+SocketEvents.connect(server);
 
 app.use(express.json());
 app.use(

@@ -4,9 +4,12 @@ import { Link } from "react-router-dom";
 
 
 export const Container = styled(Paper)(()=>({
-    maxWidth:"600px",
+    // maxWidth:"600px",
+    // width:"60%",
+    width:"500px",
     display:"block",
     margin:"0 auto",
+    height:"140px",
     // border:"1.4px solid rgba(170,170,170,0.5)",
     // borderRadius:"4px",
     padding:"5px 10px",

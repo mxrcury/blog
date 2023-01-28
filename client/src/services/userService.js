@@ -11,12 +11,12 @@ class UserService {
     }
     async addComment(comment) {
         const addedComment = await $api.post(`/users/comment`, comment);
-        console.log(`res comm `, addedComment);
+        console.log(`Req add comm - `, addedComment.data);
         return addedComment.data;
     }
     async editProfile(options) {
-        const updatedOptions = await $api.post(`/users/edit`,options)
-        return updatedOptions.data
+        const updatedOptions = await $api.post(`/users/edit`, options);
+        return updatedOptions.data;
     }
 }
 

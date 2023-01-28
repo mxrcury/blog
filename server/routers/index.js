@@ -1,15 +1,16 @@
-const Router = require('express')
-const authRouter = require('./auth.router')
-const postRouter = require('./posts.router')
-const authMiddleware = require('../middlewares/auth-middleware')
-const usersRouter = require('./users.router')
+const Router = require("express");
+const authRouter = require("./auth.router");
+const postRouter = require("./posts.router");
+const authMiddleware = require("../middlewares/auth-middleware");
+const usersRouter = require("./users.router");
+const chatsRouter = require("./chats.router");
 
-const rootRouter = new Router()
+const rootRouter = new Router();
 
+rootRouter.use("/auth", authRouter);
+rootRouter.use("/posts", authMiddleware, postRouter);
+rootRouter.use("/users", authMiddleware, usersRouter);
+rootRouter.use("/messages", chatsRouter);
+// authMiddleware;
 
-rootRouter.use('/auth',authRouter)
-rootRouter.use('/posts', authMiddleware ,postRouter)
-rootRouter.use('/users',authMiddleware,usersRouter)
-
-
-module.exports = rootRouter
+module.exports = rootRouter;

@@ -18,10 +18,10 @@ class TokenService {
   }
   async saveToken(userId, refreshToken) {
     try {
-      const savedToken = await pool.query(
-        `INSERT INTO tokens (user_id,refresh_token) values ($1,$2) RETURNING*;`,
-        [userId, refreshToken]
-      );
+      const savedToken = await pool.query(`INSERT INTO tokens (user_id,refresh_token) values ($1,$2) RETURNING*;`, [
+        userId,
+        refreshToken,
+      ]);
 
       return savedToken.rows[0];
     } catch (error) {
@@ -35,16 +35,17 @@ class TokenService {
     return token;
   }
   async findToken(refreshToken) {
-    const token = await pool.query(
-      `SELECT * FROM tokens WHERE refresh_token = $1`,
-      [refreshToken]
-    );
+    const token = await pool.query(`SELECT * FROM tokens WHERE refresh_token = $1`, [refreshToken]);
+    console.log(`Find refresh token in DB - `, token.rows[0]);
     return token.rows[0];
   }
   validateRefreshToken(token) {
-    console.log(typeof String(token));
-    const isTokenValid = jwt.verify(token, process.env.REFRESH_SECRET);
-    return isTokenValid;
+    try {
+      const isTokenValid = jwt.verify(token, process.env.REFRESH_SECRET);
+      return isTokenValid;
+    } catch (error) {
+      return false;
+    }
   }
   validateAccessToken(token) {
     try {

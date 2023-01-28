@@ -6,7 +6,7 @@ const useTime = () => {
   const getCurrentDateInISO = (date) => {
     const currentDate = new date();
     const currentDay = currentDate.getDate();
-    const currentMonth = currentDate.getMonth();
+    const currentMonth = currentDate.getMonth() + 1;
     const currentYear = currentDate.getFullYear();
     const currentTimeToISO = `${
       currentDay < 10 ? `0${currentDay}` : currentDay
