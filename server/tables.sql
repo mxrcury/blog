@@ -64,12 +64,27 @@ alter table users add age INT;
 
 --
 
-
-create table messages(
+create table chat(
   id SERIAL PRIMARY KEY,
   user_id INT NOT NULL,
+  partner_id INT NOT NULL,
+  partner_name VARCHAR(255) NOT NULL,
+  FOREIGN KEY (user_id) references users (id),
+  FOREIGN KEY (partner_id) references users (id),
+  FOREIGN KEY (partner_name) references users (username)
+);
+
+create table chat_messages(
+  id SERIAL PRIMARY KEY,
+  send_from_id INT NOT NULL,
+  send_to_id INT NOT NULL,
+  chat_id INT NOT NULL,
   text TEXT NOT NULL,
   created_at VARCHAR(255) NOT NULL,
-  FOREIGN KEY (user_id) references users (id)
-)
-
+  created_by VARCHAR(255) NOT NULL,
+  FOREIGN KEY (send_from_id) references users (id),
+  FOREIGN KEY (send_to_id) references users (id),
+  FOREIGN KEY (created_by) references users (username),
+  FOREIGN KEY (chat_id) references chat(id)
+);
+alter table messages ADD created_by VARCHAR(255) FOREIGN KEY (created_by) references users (username);

@@ -15,6 +15,7 @@ export interface Users {
 
 export interface AuthenticatedUser extends User {
   token: string;
+  id: number
 }
 
 export interface User {

@@ -10,7 +10,7 @@ const rootRouter = new Router();
 rootRouter.use("/auth", authRouter);
 rootRouter.use("/posts", authMiddleware, postRouter);
 rootRouter.use("/users", authMiddleware, usersRouter);
-rootRouter.use("/messages", chatsRouter);
+rootRouter.use("/chats", chatsRouter);
 // authMiddleware;
 
 module.exports = rootRouter;

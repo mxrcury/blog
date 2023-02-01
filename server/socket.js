@@ -13,6 +13,11 @@ class Socket {
             this._socket = socket;
             this.sendMessage();
             this.updatePosts();
+            console.log(
+                `${socket.id} from ${socket.handshake.headers.origin} at ${new Date(
+                    socket.handshake.time
+                ).toLocaleTimeString()}`
+            );
         });
     }
     updatePosts() {

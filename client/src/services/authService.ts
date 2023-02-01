@@ -12,6 +12,7 @@ class authService {
         const user = { username, email, password };
         try {
             const logginnedUser = await $apiAuth.post("/auth/login", user);
+            console.log(logginnedUser)
             return logginnedUser.data;
         } catch (error) {
             return { error };

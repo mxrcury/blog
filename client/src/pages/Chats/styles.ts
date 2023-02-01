@@ -1,4 +1,7 @@
+import { styled } from "@mui/material";
 
 
 
-export { }
+export const ChatContainer = styled("div")(() => ({
+  display: "flex"
+}))

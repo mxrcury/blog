@@ -16,6 +16,7 @@ const initialState: InitialState = {
     token: getFromStorage("accessToken") || null,
     isAuth: !!getFromStorage("accessToken") || null,
     userInfo: {
+        id: userInfo.id || null,
         username: userInfo.username || null,
         email: userInfo.email || null,
         jobPosition: userInfo.jobPosition || null,
@@ -41,7 +42,8 @@ const userSlice = createSlice({
     initialState,
     reducers: {
         setUser: (state, action: PayloadAction<AuthenticatedUser>) => {
-            const { username, token, email, companyName, jobPosition, skills, age } = action.payload;
+            console.log(`In slice set user - `, action.payload)
+            const { username, token, email, companyName, jobPosition, skills, age, id } = action.payload;
             state.token = token;
             state.isAuth = !!token;
             // age option - optional
@@ -52,6 +54,7 @@ const userSlice = createSlice({
                 skills,
                 companyName,
                 age,
+                id
             };
         },
         clearUser: (state) => {
