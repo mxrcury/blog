@@ -1,8 +1,10 @@
 ## Used technologies:
-- ReactJS
+- TypeScript
+- React
 - ReduxToolkit
-- NodeJS + Express.js
+- Node.js + Express.js
 - PostgreSQL
+- socket-io
 - MUI, styled-components
 ## Follow next steps to set up and use this app: 
 To set up the project you need to install all the node modules in both of the projects
