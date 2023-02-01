@@ -1,7 +1,8 @@
 ## Used technologies:
-- ReactJS
+- TypeScript
+- React
 - ReduxToolkit
-- NodeJS + Express.js
+- Node.js + Express.js
 - PostgreSQL
 - socket-io
 - MUI, styled-components
